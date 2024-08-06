@@ -47,8 +47,8 @@ const validateListing = (req,res,next) =>{
 };
 
 const validateReview = (req,res,next) =>{
-    let {error} = reviewSchema.validate(req.body.review);
-    // console.log(result);
+    let {error} = reviewSchema.validate(req.body);
+    console.log(req.body.review);
     if(error){
         let errMsg = error.details.map((el)=> el.message).join(",");
         throw new ExpressError(400, errMsg);
@@ -56,7 +56,6 @@ const validateReview = (req,res,next) =>{
         next();
     }
 };
-
 // app.get("/testListing",async(req,res)=>{
 //     let sampleListing = new Listing({
 //         title:"my new villa",
@@ -84,7 +83,7 @@ app.get("/listings/new",(req,res)=>{
 //show route
 app.get("/listings/:id",wrapAsync(async (req,res)=>{
     let {id} = req.params;
-    const listing = await Listing.findById(id);
+    const listing = await Listing.findById(id).populate("reviews");
     res.render("./list/show.ejs",{listing});
 }));
 
@@ -128,6 +127,7 @@ app.post("/listings/:id/reviews", validateReview,wrapAsync(async(req,res)=>{
    listing.reviews.push(newReview);
 
    await newReview.save();
+   
    await listing.save();
 
    res.redirect(`/listings/${listing._id}`);
