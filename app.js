@@ -47,7 +47,7 @@ const validateListing = (req,res,next) =>{
 };
 
 const validateReview = (req,res,next) =>{
-    let {error} = reviewSchema.validate(req.body);
+    let {error} = reviewSchema.validate(req.body.review);
     // console.log(result);
     if(error){
         let errMsg = error.details.map((el)=> el.message).join(",");
@@ -121,7 +121,7 @@ app.delete("/listings/:id",wrapAsync(async(req,res)=>{
 
 //review
 //post route
-app.post("/listings/:id/reviews", validateReview, async(req,res)=>{
+app.post("/listings/:id/reviews", validateReview,wrapAsync(async(req,res)=>{
    let listing = await Listing.findById(req.params.id);
    let newReview = new Review(req.body.review);
 
@@ -131,14 +131,7 @@ app.post("/listings/:id/reviews", validateReview, async(req,res)=>{
    await listing.save();
 
    res.redirect(`/listings/${listing._id}`);
-});
-
-
-// middle ware for handling error
-
-// app.use((err,req,res,next)=>{
-//     res.send("something went wrong");
-// })
+}));
 
 app.all("*",(req,res,next)=>{
     next(new ExpressError(404,"page Not Found!"));
@@ -148,9 +141,8 @@ app.use((err, req, res, next) =>{
     let {statusCode=500, message="SOMETHING WENT WRONG!"} = err;
     // res.status(statusCode).send(message);
     res.render("error.ejs", {err});
+    // res.status(statusCode).render("error.ejs",{message});
 });
-
-
 
 
 app.listen(8080,()=>{
