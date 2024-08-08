@@ -53,9 +53,11 @@ body{
 }
 
 /* cards */
-.listing-card{
+.list-card{
     border: none !important;
     margin-bottom: 2rem;
+    margin-left: 0.5rem;
+    margin-right:0.5rem;
 }
 
 .card-img-top{
@@ -111,4 +113,43 @@ body{
 .show-card{
     padding-left: 0;
     padding-right: 0;
+}
+
+/* ta */
+.show-card {
+    margin: auto;
+    margin-top: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.show-img {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    max-height: 300px;
+    object-fit: cover;
+}
+
+.edit-btn, .delete-btn {
+    width: 100px;
+}
+
+.btns {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.needs-validation {
+    margin-top: 20px;
+}
+
+.card-title {
+    font-weight: bold;
+}
+
+.card-text {
+    font-size: 1rem;
 }
