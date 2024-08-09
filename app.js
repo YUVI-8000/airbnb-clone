@@ -54,6 +54,7 @@ app.use(flash());
 
 app.use((req,res,next)=>{
     res.locals.success = req.flash("success");
+    res.locals.error = req.flash("error");
     console.log(res.locals.success);
     next();
 })
@@ -92,6 +93,7 @@ app.delete("/listings/:id/reviews/:reviewId", wrapAsync (async(req,res)=>{
 
     await Listing.findByIdAndUpdate(id , {$pull: {reviews: reviewId}});
     await Review.findByIdAndDelete(reviewId);
+    req.flash("success","review Deleted!");
 
     res.redirect(`/listings/${id}`);
 }))
